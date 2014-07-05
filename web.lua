@@ -23,8 +23,9 @@ function Application:run()
             ngx.log(ngx.DEBUG, "match pattern:", pattern)
          end
          matched = i
-         view(unpack(match))
-         break
+         local status = view(unpack(match))
+         status = status or ngx.HTTP_OK
+         ngx.exit(status)
       end
    end
 
