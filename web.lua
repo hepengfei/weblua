@@ -1,5 +1,5 @@
 
-local _M = {}
+local _M = { debug = nil }
 
 local Application = {}
 
@@ -19,6 +19,9 @@ function Application:run()
       -- regex mather in compile mode
       local match = ngx.re.match(ngx.var.uri, pattern, "")
       if match then
+         if _M.debug then
+            ngx.log(ngx.DEBUG, "match pattern:", pattern)
+         end
          matched = i
          view(unpack(match))
          break
@@ -26,6 +29,9 @@ function Application:run()
    end
 
    if not matched then
+      if _M.debug then
+         ngx.log(ngx.DEBUG, "uri not matched:", ngx.var.uri)
+      end
       ngx.exit(ngx.HTTP_NOT_FOUND)
    end
 end
